@@ -16,7 +16,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "GITHUB_REPOSITORY=${GITHUB_REPOSITORY}"
-          echo "BRANCH_NAME=${GITHUB_REF##*/}"
+          BRANCH_NAME=${GITHUB_REF##*/}
+          echo "BRANCH_NAME=${BRANCH_NAME}"
           API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls?state=open&base=${BRANCH_NAME}"
           echo "API_URL=$API_URL"
           curl -i -s -H "Authorization: token $GH_TOKEN" "$API_URL"
