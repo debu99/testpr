@@ -38,7 +38,7 @@ jobs:
             echo "PR_NUM=$PR_NUM USER=$USER TITLE=$TITLE"
             if [[ ! -z $TITLE ]]; then
               LINK="https://github.com/${GITHUB_REPOSITORY}/pull/${PR_NUM}"
-              WEBHOOK_URL="https://discord.com/api/webhooks/1237780527822671944/x28KR9UF6wWJ_yY6Mb2bmnp-EQONG-F2M4Pf5_FXDOXlud0d9HMNiTmvs6yX2gXFGFAs"
+              WEBHOOK_URL="https://discord.com/api/webhooks/"
               curl -H "Content-Type: application/json" -d '{"username": "GitHub-PR-Checks", "content": "Repo: '"${GITHUB_REPOSITORY}"'\nPR: PullRequest-'"${PR_NUM}"' Merge Conflict\nLink: '"${LINK}"'\nTitle: '"${TITLE}"'\nAuthor: '"${USER}"'"}' $WEBHOOK_URL
             fi
             #cat out.json
