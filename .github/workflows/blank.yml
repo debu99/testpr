@@ -21,15 +21,17 @@ jobs:
           API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls?state=open&base=${BRANCH_NAME}"
           echo "API_URL=$API_URL"
           PR_NUMS=(`curl -s -H "Authorization: token $GH_TOKEN" "$API_URL"|jq -r '.[] | .number'`)
-          for PR_NUM in "${PR_NUMS}"; do
+          for PR_NUM in "${PR_NUMS[@]}"; do
             echo "PR_NUM=$PR_NUM"
             curl -s -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUM}"
             sleep 1
           done
           sleep 10
           echo '.....'
-          for PR_NUM in "${PR_NUMS}"; do
+          for PR_NUM in "${PR_NUMS[@]}"; do
             echo "PR_NUM=$PR_NUM"
+            TITLE=''
+            USER=''
             curl -s -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/1" > out.json
             TITLE=`cat out.json | jq -r 'select(.mergeable_state == "dirty")|.title'`
             USER=`cat out.json | jq -r 'select(.mergeable_state == "dirty")|.user.login'`
