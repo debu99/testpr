@@ -20,12 +20,21 @@ jobs:
           echo "BRANCH_NAME=${BRANCH_NAME}"
           API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls?state=open&base=${BRANCH_NAME}"
           echo "API_URL=$API_URL"
-          curl -i -s -H "Authorization: token $GH_TOKEN" "$API_URL"
-          echo "[PR status]...."
-          curl -i -s -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/1"
+          PR_NUMS=(`curl -s -H "Authorization: token $GH_TOKEN" "$API_URL"|jq -r '.[] | .number'`)
+          for PR_NUM in "${PR_NUMS}"; do
+            echo "PR_NUM=$PR_NUM"
+            curl -s -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUM}"
+            sleep 1
+          done
           sleep 10
           echo '.....'
-          curl -i -s -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/1"
-          
-          #curl -s -H "Authorization: token $GH_TOKEN" "$API_URL" | jq -r '.[] | select(.mergeable_state == "dirty") | "\(.number) \(.title) by \(.user.login)"'
+          for PR_NUM in "${PR_NUMS}"; do
+            echo "PR_NUM=$PR_NUM"
+            curl -s -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/1" > out.json
+            TITLE=`cat out.json | jq -r 'select(.mergeable_state == "dirty")|.title'`
+            USER=`cat out.json | jq -r 'select(.mergeable_state == "dirty")|.user.login'`
+            echo "PR_NUM=$PR_NUM USER=$USER TITLE=$TITLE"
+            rm out.json
+            sleep 1
+          done  
         shell: bash
