@@ -23,7 +23,7 @@ jobs:
           PR_NUMS=(`curl -s -H "Authorization: token $GH_TOKEN" "$API_URL"|jq -r '.[] | .number'`)
           for PR_NUM in "${PR_NUMS[@]}"; do
             echo "PR_NUM=$PR_NUM"
-            curl -s -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUM}"
+            curl -i -s -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUM}"
             sleep 1
           done
           sleep 10
@@ -32,11 +32,11 @@ jobs:
             echo "PR_NUM=$PR_NUM"
             TITLE=''
             USER=''
-            curl -s -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/1" > out.json
+            curl -s -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUM}" > out.json
             TITLE=`cat out.json | jq -r 'select(.mergeable_state == "dirty")|.title'`
             USER=`cat out.json | jq -r 'select(.mergeable_state == "dirty")|.user.login'`
             echo "PR_NUM=$PR_NUM USER=$USER TITLE=$TITLE"
-            cat out.json
+            #cat out.json
             rm out.json
             sleep 1
           done  
