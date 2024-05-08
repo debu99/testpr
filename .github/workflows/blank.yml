@@ -23,7 +23,7 @@ jobs:
           PR_NUMS=(`curl -s -H "Authorization: token $GH_TOKEN" "$API_URL"|jq -r '.[] | .number'`)
           for PR_NUM in "${PR_NUMS[@]}"; do
             echo "PR_NUM=$PR_NUM"
-            curl -i -s -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUM}"
+            curl -i -s -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUM}" > /dev/null
             sleep 1
           done
           sleep 10
