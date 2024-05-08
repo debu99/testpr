@@ -36,6 +36,7 @@ jobs:
             TITLE=`cat out.json | jq -r 'select(.mergeable_state == "dirty")|.title'`
             USER=`cat out.json | jq -r 'select(.mergeable_state == "dirty")|.user.login'`
             echo "PR_NUM=$PR_NUM USER=$USER TITLE=$TITLE"
+            cat out.json
             rm out.json
             sleep 1
           done  
