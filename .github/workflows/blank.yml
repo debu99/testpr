@@ -21,5 +21,8 @@ jobs:
           API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls?state=open&base=${BRANCH_NAME}"
           echo "API_URL=$API_URL"
           curl -i -s -H "Authorization: token $GH_TOKEN" "$API_URL"
-          curl -s -H "Authorization: token $GH_TOKEN" "$API_URL" | jq -r '.[] | select(.mergeable_state == "dirty") | "\(.number) \(.title) by \(.user.login)"'
+          echo "[PR status]...."
+          curl -i -s -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/1"
+          
+          #curl -s -H "Authorization: token $GH_TOKEN" "$API_URL" | jq -r '.[] | select(.mergeable_state == "dirty") | "\(.number) \(.title) by \(.user.login)"'
         shell: bash
