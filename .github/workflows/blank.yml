@@ -7,12 +7,12 @@ on:
 
 jobs:
   build:
+    if: ${{ vars.ENABLE_PR_WEBHOOK == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
       - name: Run a one-line script
-        if: ${{ vars.ENABLE_PR_WEBHOOK == 'true' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
