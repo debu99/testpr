@@ -8,11 +8,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: ${{ secrets.ENABLE_PR_WEBHOOK == 'true' }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Run a one-line script
+        if: ${{ env.ENABLE_PR_WEBHOOK == 'true' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
