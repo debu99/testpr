@@ -11,6 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: debug
+        shell: bash
+        run: echo env=${{ env.ENABLE_PR_WEBHOOK }}
+
       - name: Run a one-line script
         if: ${{ env.ENABLE_PR_WEBHOOK == 'true' }}
         env:
