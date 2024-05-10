@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: ${{ secrets.ENABLE_PR_WEBHOOK }} == 'true'
+    if: ${{ secrets.ENABLE_PR_WEBHOOK == 'true' }}
     steps:
       - uses: actions/checkout@v4
 
